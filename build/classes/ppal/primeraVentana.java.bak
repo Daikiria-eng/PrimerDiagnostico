@@ -5,10 +5,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,7 +20,7 @@ import javax.swing.plaf.DimensionUIResource;
  * @author enikyasta
  */
 public class primeraVentana extends JFrame{
-    public primeraVentana(){
+        public primeraVentana(){
         setTitle("Menú principal");
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -78,7 +74,8 @@ public class primeraVentana extends JFrame{
                 tapiz_local.removeAll();
                 comando_personalizado(tapiz_local);
             }else{
-                utilidades();
+                tapiz_local.removeAll();
+                utilidades(tapiz_local);
                 setMinimumSize(new DimensionUIResource(1100,600));
             }
         };
@@ -115,60 +112,27 @@ public class primeraVentana extends JFrame{
      * Esta es la pantalla donde los usuarios disponen de sus opciones
      * para diagnóstico de la máquina
      *
+     * @param tapiz_local 
      */
-    public void utilidades(){
+    public void utilidades(JPanel tapiz_local){
         setLocationRelativeTo(null);
-        this.getContentPane().removeAll();
-        this.getContentPane().setBackground(Color.BLACK);
-        JPanel izq=new JPanel(),
-            titulo_p=new JPanel(),
-            der=new JPanel();
-        
-        titulo_p.setBackground(Color.lightGray);
-        
-        der.setBackground(Color.lightGray);
-        //der.setLayout(null);
-        
-        izq.setBackground(Color.BLUE);
-        izq.setLayout(new BoxLayout(izq,BoxLayout.Y_AXIS));
-
-        this.getContentPane().add(titulo_p,BorderLayout.NORTH);
-        this.getContentPane().add(der,BorderLayout.EAST);
-        this.getContentPane().add(izq,BorderLayout.WEST);
-
         JLabel titulo=new JLabel();
-        
         titulo.setText("Utilidades de usuario");
+        titulo.setBounds(-50,30,600,40);
         titulo.setHorizontalAlignment(SwingConstants.CENTER);
         titulo.setFont(new Font("Serif", Font.BOLD, 30));
-        titulo_p.add(titulo);
-        
-        JButton sysinfo=new JButton("Información del sistema"),
-            chkdsk=new JButton("Chequear disco");
+        tapiz_local.add(titulo,BorderLayout.NORTH);
 
+        JButton sysinfo=new JButton("Información del sistema");
+        sysinfo.setBounds(50,80,230,30);
         sysinfo.setBackground(Color.WHITE);
-        izq.add(sysinfo);
-
-        chkdsk.setBackground(Color.WHITE);
-        izq.add(chkdsk);
+        tapiz_local.add(sysinfo,BorderLayout.WEST);
         
         JTextArea output_field=new JTextArea();
-        String output=null;
-        try{
-            Process proces=Runtime.getRuntime().exec("uname -a");
-            BufferedReader br=new BufferedReader(new InputStreamReader(proces.getInputStream()));
-            while(br.readLine()!=null){
-                output=br.readLine();
-            }
-        }catch (IOException ioe){
-            System.out.println("[-] Error al ejecutar el comando");
-            ioe.printStackTrace();
-        }
-        output_field.setSize(600,600);
-        output_field.setLocation(700,700);
-        System.out.println("[?] Imprimiendo output:\n"+output);
-        output_field.setText(output);
+        output_field.setBounds(300,70,230,300);
+        output_field.setText("Texto de prueba");
+        output_field.setBackground(Color.WHITE);
         output_field.setEnabled(false);
-        der.add(output_field);
+        tapiz_local.add(output_field,BorderLayout.EAST);
     }
 }

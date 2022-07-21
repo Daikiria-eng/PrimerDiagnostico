@@ -10,12 +10,12 @@ import javax.swing.JFrame;
  * @author enikyasta
  */
 public class principal extends JFrame{
-        /**
-         * 
-         * Método principal de impresión
-         * @param args 
-         */
-        public static void main(String[]args) {
+    /**
+     * 
+     * Método principal de impresión
+     * @param args 
+     */
+    public static void main(String[]args) {
         primeraVentana pv=new primeraVentana();
         pv.setVisible(true);
 
@@ -31,5 +31,4 @@ public class principal extends JFrame{
             ioe.printStackTrace();
         }
     }
-
 }
