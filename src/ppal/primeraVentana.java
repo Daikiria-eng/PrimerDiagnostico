@@ -75,11 +75,10 @@ public class primeraVentana extends JFrame{
         comando.setMaximumSize(new DimensionUIResource(268,60));
         ActionListener click=(ActionEvent e) -> {
             if(e.getSource()==comando){
-                tapiz_local.removeAll();
                 comando_personalizado(tapiz_local);
             }else{
                 utilidades();
-                setMinimumSize(new DimensionUIResource(1100,600));
+                //setMinimumSize(new DimensionUIResource(1100,600));
             }
         };
         comando.addActionListener(click);
@@ -117,7 +116,11 @@ public class primeraVentana extends JFrame{
      *
      */
     public void utilidades(){
+        comandos cmds=new comandos();
         setLocationRelativeTo(null);
+        //setMinimumSize(new DimensionUIResource(600,500));
+        //setMinimumSize(new DimensionUIResource(600,500));
+        setMaximumSize(new DimensionUIResource(1000,600));
         this.getContentPane().removeAll();
         this.getContentPane().setBackground(Color.BLACK);
         JPanel izq=new JPanel(),
@@ -137,38 +140,60 @@ public class primeraVentana extends JFrame{
         this.getContentPane().add(izq,BorderLayout.WEST);
 
         JLabel titulo=new JLabel();
-        
         titulo.setText("Utilidades de usuario");
         titulo.setHorizontalAlignment(SwingConstants.CENTER);
         titulo.setFont(new Font("Serif", Font.BOLD, 30));
         titulo_p.add(titulo);
         
         JButton sysinfo=new JButton("Información del sistema"),
-            chkdsk=new JButton("Chequear disco");
+            chkdsk=new JButton("Chequear disco"),
+            menu=new JButton("Volver al menu");
 
         sysinfo.setBackground(Color.WHITE);
         izq.add(sysinfo);
-
         chkdsk.setBackground(Color.WHITE);
         izq.add(chkdsk);
+        menu.setBackground(Color.WHITE);
+        //izq.add(menu);
         
         JTextArea output_field=new JTextArea();
-        String output=null;
-        try{
-            Process proces=Runtime.getRuntime().exec("uname -a");
-            BufferedReader br=new BufferedReader(new InputStreamReader(proces.getInputStream()));
-            while(br.readLine()!=null){
-                output=br.readLine();
-            }
-        }catch (IOException ioe){
-            System.out.println("[-] Error al ejecutar el comando");
-            ioe.printStackTrace();
-        }
         output_field.setSize(600,600);
         output_field.setLocation(700,700);
-        System.out.println("[?] Imprimiendo output:\n"+output);
-        output_field.setText(output);
         output_field.setEnabled(false);
+        output_field.setFont(new Font(Font.MONOSPACED,Font.PLAIN,19));
+        output_field.setText("Salida de los comandos");
+        /*String output="";
+        try{
+            Process proces=Runtime.getRuntime().exec("df -h");
+            BufferedReader br=new BufferedReader(new InputStreamReader(proces.getInputStream()));
+            while(true){
+                if(br.readLine()==null) break;
+                output+=br.readLine()+"\n";
+            }
+        }catch (IOException ioe){
+            System.out.println("[-] Error al ejecutar el comando:\n");
+            ioe.printStackTrace();
+        }
+        output_field.setText(output);*/
+        
         der.add(output_field);
+        
+        ActionListener click=(ActionEvent ae)->{
+            if(ae.getSource()==menu){
+                getContentPane().removeAll();
+                menu_ppal();
+            }if(ae.getSource()==sysinfo){
+                System.out.println("[*] Obteniendo información");
+                output_field.removeAll();
+                output_field.setText(cmds.sysinfo());
+            }if(ae.getSource()==chkdsk){
+                System.out.println("[*] Chequeando disco");
+                output_field.removeAll();
+                output_field.setText(cmds.chequearDisco());
+            }
+        };
+        sysinfo.addActionListener(click);
+        chkdsk.addActionListener(click);
+        menu.addActionListener(click);
     }
 }
