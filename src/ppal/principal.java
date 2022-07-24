@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 
 /**
  *
+ * Método principal donde se renderiza el programa
+ * 
  * @author enikyasta
  */
 public class principal extends JFrame{
@@ -20,17 +22,5 @@ public class principal extends JFrame{
         pv.setVisible(true);
         //segundaClase sv=new segundaClase();
         //sv.setVisible(true);
-
-        /*try{
-            Process proces=Runtime.getRuntime().exec("echo -e 'Prueba\nprueba'");
-            BufferedReader br=new BufferedReader(new InputStreamReader(proces.getInputStream()));
-            String output=null;
-            while((output=br.readLine())!=null){
-                System.out.println(output);
-            }
-        }catch(IOException ioe){
-            System.out.println("Error al ejecutar el comando: "+ioe);
-            ioe.printStackTrace();
-        }*/
     }
 }

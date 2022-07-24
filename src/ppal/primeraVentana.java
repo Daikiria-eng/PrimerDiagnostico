@@ -5,9 +5,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,14 +15,12 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.DimensionUIResource;
 
-
 /**
  *
  * @author enikyasta
  */
 public class primeraVentana extends JFrame{
     public primeraVentana(){
-        setTitle("Menú principal");
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setMinimumSize(new DimensionUIResource(600,500));
@@ -51,6 +46,7 @@ public class primeraVentana extends JFrame{
      * Se crea la pantalla principal donde está en menú
      */
     public void menu_ppal(){
+        setTitle("Menu principal");
         setLocationRelativeTo(null);
         JPanel tapiz_local=tapiz();
         JLabel titulo=new JLabel();
@@ -74,12 +70,10 @@ public class primeraVentana extends JFrame{
         comando.setBackground(Color.WHITE);
         comando.setMaximumSize(new DimensionUIResource(268,60));
         ActionListener click=(ActionEvent e) -> {
-            if(e.getSource()==comando){
-                comando_personalizado(tapiz_local);
-            }else{
+            if(e.getSource()==comando)
+                comando_personalizado();
+            else
                 utilidades();
-                //setMinimumSize(new DimensionUIResource(1100,600));
-            }
         };
         comando.addActionListener(click);
         utilidades.addActionListener(click);
@@ -95,8 +89,16 @@ public class primeraVentana extends JFrame{
      *
      * @param tapiz_local 
      */
-    public void comando_personalizado(JPanel tapiz_local){
+    public void comando_personalizado(){
+        this.getContentPane().removeAll();
         setLocationRelativeTo(null);
+        setTitle("Comando personalizado de usuario");
+  
+        JPanel tapiz_local=new JPanel();
+        tapiz_local.setBackground(Color.lightGray);
+        tapiz_local.setLayout(new BoxLayout(tapiz_local,BoxLayout.Y_AXIS));
+        this.getContentPane().add(tapiz_local);
+        
         JLabel titulo=new JLabel();
         titulo.setText("Comando personalizado");
         titulo.setBounds(20,50,600,40);
@@ -107,6 +109,11 @@ public class primeraVentana extends JFrame{
         JTextField comando=new JTextField("Su comando");
         comando.setBounds(60,140,500,35);
         tapiz_local.add(comando);
+        
+        JTextArea output_field=new JTextArea("Resultado del comadno");
+        output_field.setEnabled(false);
+        output_field.setFont(new Font(Font.MONOSPACED,Font.BOLD,18));
+        tapiz_local.add(output_field);
     }
 
     /**
@@ -116,10 +123,9 @@ public class primeraVentana extends JFrame{
      *
      */
     public void utilidades(){
+        setTitle("Utilidades del usuario");
         comandos cmds=new comandos();
         setLocationRelativeTo(null);
-        //setMinimumSize(new DimensionUIResource(600,500));
-        //setMinimumSize(new DimensionUIResource(600,500));
         setMaximumSize(new DimensionUIResource(1000,600));
         this.getContentPane().removeAll();
         this.getContentPane().setBackground(Color.BLACK);
@@ -130,7 +136,6 @@ public class primeraVentana extends JFrame{
         titulo_p.setBackground(Color.lightGray);
         
         der.setBackground(Color.lightGray);
-        //der.setLayout(null);
         
         izq.setBackground(Color.BLUE);
         izq.setLayout(new BoxLayout(izq,BoxLayout.Y_AXIS));
@@ -154,7 +159,7 @@ public class primeraVentana extends JFrame{
         chkdsk.setBackground(Color.WHITE);
         izq.add(chkdsk);
         menu.setBackground(Color.WHITE);
-        //izq.add(menu);
+        izq.add(menu);
         
         JTextArea output_field=new JTextArea();
         output_field.setSize(600,600);
@@ -162,20 +167,6 @@ public class primeraVentana extends JFrame{
         output_field.setEnabled(false);
         output_field.setFont(new Font(Font.MONOSPACED,Font.PLAIN,19));
         output_field.setText("Salida de los comandos");
-        /*String output="";
-        try{
-            Process proces=Runtime.getRuntime().exec("df -h");
-            BufferedReader br=new BufferedReader(new InputStreamReader(proces.getInputStream()));
-            while(true){
-                if(br.readLine()==null) break;
-                output+=br.readLine()+"\n";
-            }
-        }catch (IOException ioe){
-            System.out.println("[-] Error al ejecutar el comando:\n");
-            ioe.printStackTrace();
-        }
-        output_field.setText(output);*/
-        
         der.add(output_field);
         
         ActionListener click=(ActionEvent ae)->{
@@ -183,11 +174,9 @@ public class primeraVentana extends JFrame{
                 getContentPane().removeAll();
                 menu_ppal();
             }if(ae.getSource()==sysinfo){
-                System.out.println("[*] Obteniendo información");
                 output_field.removeAll();
                 output_field.setText(cmds.sysinfo());
             }if(ae.getSource()==chkdsk){
-                System.out.println("[*] Chequeando disco");
                 output_field.removeAll();
                 output_field.setText(cmds.chequearDisco());
             }

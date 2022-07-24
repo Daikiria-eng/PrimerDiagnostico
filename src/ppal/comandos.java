@@ -6,40 +6,66 @@ import java.io.InputStreamReader;
 
 /**
  *
+ * Desde esta clase se invocaran los comandos de diagnóstico para el
+ * usuario
+ * 
  * @author enikyasta
  */
 public class comandos {
+    /**
+     * Retorna la información del sistema, según el output del comando
+     * de systeminfo
+     * 
+     * @return output
+     */
     public String sysinfo(){
         String output="";
         try{
-            Process proces=Runtime.getRuntime().exec("systeminfo");
+            System.out.println("[*] Obteniendo información");
+            Process proces=Runtime.getRuntime().exec("uname -a");
             BufferedReader br=new BufferedReader(new InputStreamReader(proces.getInputStream()));
+            String temp="";
             while(true){
-                String temp=br.readLine()+"\n";
+                temp=br.readLine();
+                System.out.println(temp);
                 if(temp==null) break;
-                output+=temp;
+                else output+=temp+"\n";
             }
         }catch(IOException ioe){
             System.out.println("[-] Error al obtener informacion:\n"+ioe);
             ioe.printStackTrace();
         }
+        System.out.println("retorno");
         return output;
     }
     
+    /**
+     * 
+     * Se realiza un chequeo del disco y se retorna el output de la 
+     * ejecución del comando 
+     * 
+     * @return 
+     */
     public String chequearDisco(){
         String output="";
         try{
-            Process proces=Runtime.getRuntime().exec("chksdk");
+            System.out.println("[*] Chequeando disco");
+            Process proces=Runtime.getRuntime().exec("lsblk");
             BufferedReader br=new BufferedReader(new InputStreamReader(proces.getInputStream()));
+            String temp="";
             while(true){
-                String temp=br.readLine();
+                temp=br.readLine();
                 if(temp==null) break;
-                output+=temp+"\n";
+                else{
+                    System.out.println(temp);
+                    output+=temp+"\n";
+                }
             }
         }catch(IOException ioe){
             System.out.println("[-] Error al chequear disco:\n");
             ioe.printStackTrace();
         }
+        System.out.println("checkpoint retorno");
         return output;
     }
 }
