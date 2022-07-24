@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -86,8 +89,7 @@ public class primeraVentana extends JFrame{
      * Este es el pantallazo dondel usuario ejecuta un comando personalizado
      *
      * Recibe como parámetro el papel fondo de la aplicación de la clase
-     *
-     * @param tapiz_local 
+     * 
      */
     public void comando_personalizado(){
         this.getContentPane().removeAll();
@@ -110,10 +112,34 @@ public class primeraVentana extends JFrame{
         comando.setBounds(60,140,500,35);
         tapiz_local.add(comando);
         
+        JButton execute=new JButton("Ejecutar comando");
+        execute.setBackground(Color.WHITE);
+        tapiz_local.add(execute);
+        
         JTextArea output_field=new JTextArea("Resultado del comadno");
         output_field.setEnabled(false);
         output_field.setFont(new Font(Font.MONOSPACED,Font.BOLD,18));
         tapiz_local.add(output_field);
+        
+        ActionListener ejecutar=(ActionEvent ae)->{
+            if(ae.getSource()==execute){
+                String cmd=comando.getText();
+                try{
+                    System.out.println(cmd);
+                    Process proces=Runtime.getRuntime().exec(cmd);
+                    BufferedReader br=new BufferedReader(new InputStreamReader(proces.getInputStream()));
+                    String usr_output="";
+                    while((usr_output=br.readLine())!=null){
+                        output_field.setText(usr_output);
+                    }
+                }catch(IOException ioe){
+                    System.out.println("[-] Error al ejecutar comando");
+                    ioe.printStackTrace();
+                }
+            }
+        };
+        execute.addActionListener(ejecutar);
+        
     }
 
     /**
