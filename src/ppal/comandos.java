@@ -22,7 +22,7 @@ public class comandos {
         String output="";
         try{
             System.out.println("[*] Obteniendo información");
-            Process proces=Runtime.getRuntime().exec("uname -a");
+            Process proces=Runtime.getRuntime().exec("systeminfo");
             BufferedReader br=new BufferedReader(new InputStreamReader(proces.getInputStream()));
             String temp="";
             while(true){
@@ -50,7 +50,7 @@ public class comandos {
         String output="";
         try{
             System.out.println("[*] Chequeando disco");
-            Process proces=Runtime.getRuntime().exec("lsblk");
+            Process proces=Runtime.getRuntime().exec("chkdsk");
             BufferedReader br=new BufferedReader(new InputStreamReader(proces.getInputStream()));
             String temp="";
             while(true){

@@ -50,7 +50,7 @@ public class primeraVentana extends JFrame{
      */
     public void menu_ppal(){
         setTitle("Menu principal");
-        setLocationRelativeTo(null);
+
         JPanel tapiz_local=tapiz();
         JLabel titulo=new JLabel();
         titulo.setText("Primer Diagnóstico");
@@ -92,54 +92,71 @@ public class primeraVentana extends JFrame{
      * 
      */
     public void comando_personalizado(){
+        setTitle("Comando Personalizado");
+        setMaximumSize(new DimensionUIResource(1000,1050));
+
         this.getContentPane().removeAll();
-        setLocationRelativeTo(null);
-        setTitle("Comando personalizado de usuario");
-  
         JPanel tapiz_local=new JPanel();
         tapiz_local.setBackground(Color.lightGray);
-        tapiz_local.setLayout(new BoxLayout(tapiz_local,BoxLayout.Y_AXIS));
+        tapiz_local.setLayout(null);
         this.getContentPane().add(tapiz_local);
-        
+
         JLabel titulo=new JLabel();
         titulo.setText("Comando personalizado");
-        titulo.setBounds(20,50,600,40);
-        titulo.setHorizontalAlignment(SwingConstants.CENTER);       
         titulo.setFont(new Font("Serif", Font.BOLD, 30));
+        titulo.setBounds(20,50,600,40);
         tapiz_local.add(titulo);
 
-        JTextField comando=new JTextField("Su comando");
+        JTextField comando=new JTextField();
+        comando.setText("Ingrese su comando personalizado");
         comando.setBounds(60,140,500,35);
         tapiz_local.add(comando);
-        
-        JButton execute=new JButton("Ejecutar comando");
-        execute.setBackground(Color.WHITE);
-        tapiz_local.add(execute);
-        
-        JTextArea output_field=new JTextArea("Resultado del comadno");
+
+        JTextArea output_field=new JTextArea();
+        output_field.setText("Resultado del comando");
+        output_field.setBounds(60,300,500,200);
+        output_field.setFont(new Font(Font.MONOSPACED,Font.BOLD,15));
         output_field.setEnabled(false);
-        output_field.setFont(new Font(Font.MONOSPACED,Font.BOLD,18));
+        output_field.setBackground(Color.WHITE);
+        output_field.setForeground(Color.BLACK);
         tapiz_local.add(output_field);
-        
-        ActionListener ejecutar=(ActionEvent ae)->{
-            if(ae.getSource()==execute){
-                String cmd=comando.getText();
+
+        JButton ejecutar=new JButton("Ejecutar comando"),
+            menu_ppal_b=new JButton("Ir al menú ppal");
+        ejecutar.setBounds(170,200,250,30);
+        ejecutar.setBackground(Color.WHITE);
+        ejecutar.setFont(new Font("Serif",Font.BOLD,15));
+
+        menu_ppal_b.setBounds(195,245,200,30);
+        menu_ppal_b.setFont(new Font("Serif",Font.BOLD,15));
+        menu_ppal_b.setBackground(Color.WHITE);
+
+        ActionListener click=(ActionEvent ae)->{
+            if(ae.getSource()==ejecutar){
+                String cmd=comando.getText(),
+                        output="";
                 try{
-                    System.out.println(cmd);
                     Process proces=Runtime.getRuntime().exec(cmd);
                     BufferedReader br=new BufferedReader(new InputStreamReader(proces.getInputStream()));
-                    String usr_output="";
-                    while((usr_output=br.readLine())!=null){
-                        output_field.setText(usr_output);
-                    }
+                    output_field.setText("");
+                    while((output=br.readLine())!=null)
+                        output_field.append(output+"\n");
                 }catch(IOException ioe){
-                    System.out.println("[-] Error al ejecutar comando");
+                    System.out.println("[-] Error al ejecutar el comando:\n");
                     ioe.printStackTrace();
+                    output_field.setText("Por favor verifique su comando");
                 }
+            }else if(ae.getSource()==menu_ppal_b){
+                this.getContentPane().removeAll();
+                menu_ppal();
             }
         };
-        execute.addActionListener(ejecutar);
-        
+
+        ejecutar.addActionListener(click);
+        menu_ppal_b.addActionListener(click);
+
+        tapiz_local.add(ejecutar);
+        tapiz_local.add(menu_ppal_b);
     }
 
     /**
@@ -149,7 +166,9 @@ public class primeraVentana extends JFrame{
      *
      */
     public void utilidades(){
+        setMaximumSize(new DimensionUIResource(1000,600));
         setTitle("Utilidades del usuario");
+
         comandos cmds=new comandos();
         setLocationRelativeTo(null);
         setMaximumSize(new DimensionUIResource(1000,600));
@@ -158,11 +177,11 @@ public class primeraVentana extends JFrame{
         JPanel izq=new JPanel(),
             titulo_p=new JPanel(),
             der=new JPanel();
-        
+
         titulo_p.setBackground(Color.lightGray);
-        
+
         der.setBackground(Color.lightGray);
-        
+
         izq.setBackground(Color.BLUE);
         izq.setLayout(new BoxLayout(izq,BoxLayout.Y_AXIS));
 
@@ -175,7 +194,7 @@ public class primeraVentana extends JFrame{
         titulo.setHorizontalAlignment(SwingConstants.CENTER);
         titulo.setFont(new Font("Serif", Font.BOLD, 30));
         titulo_p.add(titulo);
-        
+
         JButton sysinfo=new JButton("Información del sistema"),
             chkdsk=new JButton("Chequear disco"),
             menu=new JButton("Volver al menu");
@@ -186,7 +205,7 @@ public class primeraVentana extends JFrame{
         izq.add(chkdsk);
         menu.setBackground(Color.WHITE);
         izq.add(menu);
-        
+
         JTextArea output_field=new JTextArea();
         output_field.setSize(600,600);
         output_field.setLocation(700,700);
@@ -194,7 +213,7 @@ public class primeraVentana extends JFrame{
         output_field.setFont(new Font(Font.MONOSPACED,Font.PLAIN,19));
         output_field.setText("Salida de los comandos");
         der.add(output_field);
-        
+
         ActionListener click=(ActionEvent ae)->{
             if(ae.getSource()==menu){
                 getContentPane().removeAll();
