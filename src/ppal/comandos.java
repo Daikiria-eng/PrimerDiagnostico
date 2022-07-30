@@ -69,6 +69,23 @@ public class comandos {
                 System.out.println("[+] Error al escribir output");
                 e.printStackTrace();
             }
+            try {
+                Process awk_filter=Runtime.getRuntime().exec(
+                        "cmd /c "+commandConstants.AWK+" '/problem/ {print}' "+resx
+                );
+                BufferedReader be=new BufferedReader(new InputStreamReader(proces.getInputStream()));
+                String temp_br="";
+                output="";
+                while(true){
+                    temp_br=br.readLine();
+                    if(temp_br==null) break;
+                    else output+=temp_br;
+                }
+                return output;
+            } catch (IOException ioe) {
+                System.out.println("[-] Error al generar registro");
+                ioe.printStackTrace();
+            }
         }catch(IOException ioe){
             System.out.println("[-] Error al chequear disco:\n");
             ioe.printStackTrace();
