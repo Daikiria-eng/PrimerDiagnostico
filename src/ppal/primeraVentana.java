@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.DimensionUIResource;
@@ -173,7 +174,7 @@ public class primeraVentana extends JFrame{
         setLocationRelativeTo(null);
         setMaximumSize(new DimensionUIResource(1000,600));
         this.getContentPane().removeAll();
-        this.getContentPane().setBackground(Color.BLACK);
+        this.getContentPane().setBackground(Color.lightGray);
         JPanel izq=new JPanel(),
             titulo_p=new JPanel(),
             der=new JPanel();
@@ -206,11 +207,13 @@ public class primeraVentana extends JFrame{
         menu.setBackground(Color.WHITE);
         izq.add(menu);
 
-        JTextArea output_field=new JTextArea();
+        JTextPane output_field=new JTextPane();
         output_field.setSize(600,600);
         output_field.setLocation(700,700);
-        output_field.setEnabled(false);
+        //output_field.setEnabled(false);
+        output_field.setBackground(Color.lightGray);
         output_field.setFont(new Font(Font.MONOSPACED,Font.PLAIN,19));
+        output_field.setForeground(Color.BLACK);
         output_field.setText("Salida de los comandos");
         der.add(output_field);
 

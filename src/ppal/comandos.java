@@ -22,14 +22,10 @@ public class comandos {
         String output="";
         try{
             System.out.println("[*] Obteniendo información");
-            Process proces=Runtime.getRuntime().exec("systeminfo");
+            Process proces=Runtime.getRuntime().exec("chkdsk");
             BufferedReader br=new BufferedReader(new InputStreamReader(proces.getInputStream()));
-            String temp="";
-            while(true){
-                temp=br.readLine();
-                System.out.println(temp);
-                if(temp==null) break;
-                else output+=temp+"\n";
+            for(int i=0;i<7;i++){
+                output+=br.readLine()+"\n";
             }
         }catch(IOException ioe){
             System.out.println("[-] Error al obtener informacion:\n"+ioe);
