@@ -22,7 +22,7 @@ public class comandos {
         String output="";
         try{
             System.out.println("[*] Obteniendo información");
-            Process proces=Runtime.getRuntime().exec("chkdsk");
+            Process proces=Runtime.getRuntime().exec("systeminfo");
             BufferedReader br=new BufferedReader(new InputStreamReader(proces.getInputStream()));
             for(int i=0;i<7;i++){
                 output+=br.readLine()+"\n";
