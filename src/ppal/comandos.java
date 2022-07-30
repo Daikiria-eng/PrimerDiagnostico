@@ -1,6 +1,9 @@
 package ppal;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -31,7 +34,6 @@ public class comandos {
             System.out.println("[-] Error al obtener informacion:\n"+ioe);
             ioe.printStackTrace();
         }
-        System.out.println("retorno");
         return output;
     }
     
@@ -45,23 +47,48 @@ public class comandos {
     public String chequearDisco(){
         String output="";
         try{
-            System.out.println("[*] Chequeando disco");
-            Process proces=Runtime.getRuntime().exec("chkdsk");
+            Process proces=Runtime.getRuntime().exec("cmd /c chkdsk");
             BufferedReader br=new BufferedReader(new InputStreamReader(proces.getInputStream()));
-            String temp="";
+            String temp="",
+                   resx=commandConstants.TEMP_DIR+"resultado.txt";
             while(true){
                 temp=br.readLine();
                 if(temp==null) break;
-                else{
-                    System.out.println(temp);
-                    output+=temp+"\n";
-                }
+                else output+=temp+"\n";
+            }
+            try{
+                if(carpeta_temporal()){
+                    File restxt=new File(resx);
+                    FileWriter fw=new FileWriter(restxt);
+                    BufferedWriter bw=new BufferedWriter(fw);
+                    bw.write(output);
+                    bw.close();
+                }else
+                    System.out.println("[-] No se pudo crear temp/resultados.txt");
+            }catch(Exception e){
+                System.out.println("[+] Error al escribir output");
+                e.printStackTrace();
             }
         }catch(IOException ioe){
             System.out.println("[-] Error al chequear disco:\n");
             ioe.printStackTrace();
         }
-        System.out.println("checkpoint retorno");
         return output;
+    }
+
+    /**
+     *
+     * Este método se encargará de crear un carpeta de temporales
+     * en caso de que no existe
+     */
+    public boolean carpeta_temporal(){
+        try{
+            Process proces=Runtime.getRuntime().exec("cmd /c "+commandConstants.MK_TEMP);
+            return true;
+        }catch(Exception e){
+            System.out.println("[-] Error al crear carpeta temporal");
+            e.printStackTrace();
+        }
+        return false;
     }
 }

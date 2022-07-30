@@ -7,7 +7,7 @@ package ppal;
  * @author enikyasta
  */
 public class commandConstants {
-    public static final String TEMP_DIR="/temp";
-    public static final String PRUEBA_SH="/batch/ejemplo.sh";
+    public static final String TEMP_DIR="/temp/";
     public static final String CHKSDK="/batch/chkdsk.bat";
+    public static final String MK_TEMP="/batch/temp_dir.bat";
 }
