@@ -46,48 +46,13 @@ public class comandos {
      */
     public String chequearDisco(){
         String output="";
-        try{
-            Process proces=Runtime.getRuntime().exec("cmd /c chkdsk");
-            BufferedReader br=new BufferedReader(new InputStreamReader(proces.getInputStream()));
-            String temp="",
-                   resx=commandConstants.TEMP_DIR+"resultado.txt";
-            while(true){
-                temp=br.readLine();
-                if(temp==null) break;
-                else output+=temp+"\n";
-            }
-            try{
-                if(carpeta_temporal()){
-                    File restxt=new File(resx);
-                    FileWriter fw=new FileWriter(restxt);
-                    BufferedWriter bw=new BufferedWriter(fw);
-                    bw.write(output);
-                    bw.close();
-                }else
-                    System.out.println("[-] No se pudo crear temp/resultados.txt");
-            }catch(Exception e){
-                System.out.println("[+] Error al escribir output");
-                e.printStackTrace();
-            }
-            try {
-                Process awk_filter=Runtime.getRuntime().exec(
-                        "cmd /c "+commandConstants.AWK+" '/problem/ {print}' "+resx
-                );
-                BufferedReader be=new BufferedReader(new InputStreamReader(proces.getInputStream()));
-                String temp_br="";
-                output="";
-                while(true){
-                    temp_br=br.readLine();
-                    if(temp_br==null) break;
-                    else output+=temp_br;
-                }
-                return output;
-            } catch (IOException ioe) {
-                System.out.println("[-] Error al generar registro");
-                ioe.printStackTrace();
-            }
-        }catch(IOException ioe){
-            System.out.println("[-] Error al chequear disco:\n");
+        try {
+            Process proc=Runtime.getRuntime().exec("cmd /c chkdsk > resultado.txt");
+            BufferedReader br=new BufferedReader(new InputStreamReader(proc.getInputStream()));
+            String temp="";
+            
+        } catch (IOException ioe) {
+            System.out.println("[-] Error chequeando disco");
             ioe.printStackTrace();
         }
         return output;
